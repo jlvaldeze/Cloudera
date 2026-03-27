@@ -1,0 +1,30 @@
+1. installation:
+  - Virtualbox
+  - download cloudera vm: https://downloads.cloudera.com/demo_vm/virtualbox/cloudera-quickstart-vm-5.13.0-0-virtualbox.zip
+  - attach cloudera to virtualbox
+  - start image in virtualbox
+ 2. configuration
+  - after starting cloudera virtualbox, cloudera quickstart in browser will appear.
+  - check cmd: hostname
+  - hdfs dfs -ls /
+  - service cloudera-scm-server status
+  - su - (password: cloudera)
+  - sudo /home/cloudera/cloudera-manager --force --express
+  - wait some minute then done!!
+
+sqoop import-all-tables \
+>     -m 1 \
+>     --connect jdbc:mysql://quickstart:3306/retail_db \
+>     --username=retail_dba \
+>     --password=cloudera \
+>     --compression-codec=snappy \
+>     --as-parquetfile \
+>     --warehouse-dir=/user/hive/warehouse \
+>     --hive-import
+
+hadoop fs -ls /user/hive/warehouse/
+
+hadoop fs -ls /user/hive/warehouse/categories/
+-- impala - query editor
+invalidate metadata;
+show tables;
